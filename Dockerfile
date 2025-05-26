@@ -1,4 +1,4 @@
-FROM nginx:1.28.0-alpine3.21-slim
+FROM nginx:1.28.0-alpine3.21-slim
 
 RUN apk update && apk upgrade && apk add curl vim sudo
 
