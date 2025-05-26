@@ -44,7 +44,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-jenkins', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh """
                         echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin 
-                        docker push ${env.PROJECT_NAME}:${env.PROJECT_BRANCH}-${env.BUILD_NUMBER}
+                        docker push ${dockerHubUser}/${env.PROJECT_NAME}:${env.PROJECT_BRANCH}-${env.BUILD_NUMBER}
                         echo "Docker image built successfully"
                         echo "Moving to the next stage"
                     """
