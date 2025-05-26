@@ -64,7 +64,7 @@ pipeline {
                             scp -o StrictHostKeyChecking=no docker-compose.yaml ${Remote_User}@${Remote_Host}:/home/${Remote_User}/docker-compose.yaml
 
                             ssh -o StrictHostKeyChecking=no ${Remote_User}@${Remote_Host} '
-                                docker pull orisuniyanu/${env.PROJECT_NAME}/${env.PROJECT_BRANCH}:${env.BUILD_NUMBER} &&
+                                docker pull orisuniyanu/${env.PROJECT_NAME}:${env.PROJECT_BRANCH}-${env.BUILD_NUMBER} &&
                                 docker compose -f /home/${Remote_User}/docker-compose.yaml down || true &&
                                 docker compose -f /home/${Remote_User}/docker-compose.yaml up -d
                             '
