@@ -39,7 +39,7 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 echo "Building Docker image"
-                sh "docker build -t ${env.PROJECT_NAME}:${env.PROJECT_BRANCH}-${env.BUILD_NUMBER} ."
+                sh "docker build -t orisuniyanu/${env.PROJECT_NAME}:${env.PROJECT_BRANCH}-${env.BUILD_NUMBER} ."
 
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-jenkins', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh """
@@ -57,14 +57,14 @@ pipeline {
                     string(credentialsId: 'Remote_Host', variable: 'Remote_Host'),
                     string(credentialsId: 'Remote_User', variable: 'Remote_User')
                 ]) {
-                    echo "Deploying Docker image: ${env.PROJECT_NAME}:${env.PROJECT_BRANCH}-${env.BUILD_NUMBER} to VM"
+                    echo "Deploying Docker image: orisuniyanu/${env.PROJECT_NAME}:${env.PROJECT_BRANCH}-${env.BUILD_NUMBER} to VM"
 
                     sshagent (credentials: ['ssh-vm-creds-id']) {
                         sh """
                             scp -o StrictHostKeyChecking=no docker-compose.yaml ${Remote_User}@${Remote_Host}:/home/${Remote_User}/docker-compose.yaml
 
                             ssh -o StrictHostKeyChecking=no ${Remote_User}@${Remote_Host} '
-                                docker pull ${env.PROJECT_NAME}/${env.PROJECT_BRANCH}:${env.BUILD_NUMBER} &&
+                                docker pull orisuniyanu/${env.PROJECT_NAME}/${env.PROJECT_BRANCH}:${env.BUILD_NUMBER} &&
                                 docker compose -f /home/${Remote_User}/docker-compose.yaml down || true &&
                                 docker compose -f /home/${Remote_User}/docker-compose.yaml up -d
                             '
