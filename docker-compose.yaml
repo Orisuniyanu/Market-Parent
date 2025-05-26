@@ -1,0 +1,6 @@
+services:
+  market:
+    container_name: MarketPeak
+    image: orisuniyanu/marketpeak:${TAG}
+    ports:
+      - 5500:80
