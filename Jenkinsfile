@@ -40,9 +40,15 @@ pipeline {
             steps {
                 echo "Building Docker image"
                 sh "docker build -t ${env.PROJECT_NAME}/${env.PROJECT_BRANCH}:${env.BUILD_NUMBER} ."
-                sh "docker push ${env.PROJECT_NAME}/${env.PROJECT_BRANCH}:${env.BUILD_NUMBER}"
-                echo "Docker image built successfully"
-                echo "Moving to the next stage"
+
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-jenkins', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh """
+                        echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin 
+                        docker push ${env.PROJECT_NAME}/${env.PROJECT_BRANCH}:${env.BUILD_NUMBER}
+                        echo "Docker image built successfully"
+                        echo "Moving to the next stage"
+                    """
+                }
             }
         }
         stage('Deploy') {
