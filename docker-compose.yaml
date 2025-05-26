@@ -1,6 +1,6 @@
 services:
   market:
     container_name: MarketParent
-    image: orisuniyanu/${env.PROJECT_NAME}:${env.PROJECT_BRANCH}-${env.BUILD_NUMBER}
+    image: "orisuniyanu/${PROJECT_NAME}:${PROJECT_BRANCH}-${BUILD_NUMBER}"
     ports:
       - 5500:80
